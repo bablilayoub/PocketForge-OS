@@ -1,0 +1,33 @@
+id: rog-ally-x
+name: ASUS ROG Ally X
+
+display:
+  resolution: "1920x1080"
+  refresh_rates:
+    - 60
+    - 120
+
+tdp:
+  min: 7
+  max: 30
+  presets:
+    silent: 9
+    balanced: 15
+    performance: 22
+    turbo: 30
+
+controls:
+  gyro: true
+  back_buttons: true
+  rgb: true
+
+fan:
+  modes:
+    - silent
+    - balanced
+    - performance
+
+launchers:
+  steam: true
+  heroic: true
+  lutris: true
