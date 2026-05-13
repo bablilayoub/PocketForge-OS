@@ -1,0 +1,6 @@
+id: battery-saver
+name: Battery Saver
+description: Conservative handheld profile intended to favor battery life.
+class: battery
+policy:
+  intent: prefer-battery

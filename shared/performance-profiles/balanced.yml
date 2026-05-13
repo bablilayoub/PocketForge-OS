@@ -1,0 +1,6 @@
+id: balanced
+name: Balanced
+description: Default handheld profile for general gaming and desktop use.
+class: balanced
+policy:
+  intent: balanced

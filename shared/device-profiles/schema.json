@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pocketforge.dev/schemas/device-profile.json",
+  "title": "PocketForge Device Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "display", "controls", "launchers"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "display": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resolution", "refresh_rates"],
+      "properties": {
+        "resolution": {
+          "type": "string",
+          "pattern": "^[0-9]+x[0-9]+$"
+        },
+        "refresh_rates": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "minProperties": 1
+    },
+    "launchers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "minProperties": 1
+    }
+  }
+}
