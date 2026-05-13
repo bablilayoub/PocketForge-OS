@@ -39,6 +39,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
 
 COPY files/ /
 COPY device-profiles/ /usr/share/handheld-os/device-profiles/
+COPY scripts/firstboot.sh /usr/libexec/handheld-os/firstboot.sh
     
 ### LINTING
 ## Verify final image and contents are correct.
