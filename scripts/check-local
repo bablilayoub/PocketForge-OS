@@ -35,6 +35,10 @@ POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
 POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
   scripts/pocketforge-daemon --once
 
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+  scripts/pocketforge-daemon --json | jq empty
+
 if command -v rg >/dev/null 2>&1; then
   echo "==> Checking for blocked early-stage references"
   if rg -n "HHD|hhd|image-template|disk_config/iso\\.toml|Handheld OS|handheld-os" . .github -g '!scripts/check-local'; then

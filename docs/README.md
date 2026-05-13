@@ -10,4 +10,5 @@ Current shared metadata schemas:
 - `shared/device-profiles/schema.json`
 - `shared/performance-profiles/schema.json`
 
+Architecture notes live in `architecture.md`.
 Start with `development.md` for the current early-alpha development workflow.

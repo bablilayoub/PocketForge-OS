@@ -11,7 +11,27 @@ Current behavior:
 - Read `/usr/share/pocketforge/device-profiles`
 - Read `/usr/share/pocketforge/performance-profiles`
 - Log detected profile IDs and names
+- Print profile inventory with `pocketforge-daemon --json`
 - Refresh metadata periodically
+
+Current JSON contract:
+
+```json
+{
+  "device_profiles": [
+    {
+      "id": "rog-ally-x",
+      "name": "ASUS ROG Ally X"
+    }
+  ],
+  "performance_profiles": [
+    {
+      "id": "balanced",
+      "name": "Balanced"
+    }
+  ]
+}
+```
 
 Future responsibilities:
 

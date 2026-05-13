@@ -9,6 +9,16 @@ log() {
   printf 'pocketforge-daemon: %s\n' "$*"
 }
 
+json_escape() {
+  local value="$1"
+  value="${value//\\/\\\\}"
+  value="${value//\"/\\\"}"
+  value="${value//$'\n'/\\n}"
+  value="${value//$'\r'/\\r}"
+  value="${value//$'\t'/\\t}"
+  printf '%s' "$value"
+}
+
 profile_field() {
   local file="$1"
   local field="$2"
@@ -24,12 +34,10 @@ profile_field() {
   ' "$file"
 }
 
-list_profiles() {
-  local kind="$1"
+collect_profiles() {
   local directory="$2"
 
   if [[ ! -d "$directory" ]]; then
-    log "no ${kind} profile directory found at ${directory}"
     return
   fi
 
@@ -39,7 +47,6 @@ list_profiles() {
   done < <(find "$directory" -maxdepth 1 -type f -name '*.yml' -print0 | sort -z)
 
   if [[ "${#files[@]}" -eq 0 ]]; then
-    log "no ${kind} profiles found in ${directory}"
     return
   fi
 
@@ -49,12 +56,57 @@ list_profiles() {
     name="$(profile_field "$file" name)"
 
     if [[ -z "$id" || -z "$name" ]]; then
-      log "skipping incomplete ${kind} profile $(basename "$file")"
       continue
     fi
 
-    log "${kind} profile loaded: id=${id} name=${name}"
+    printf '%s\t%s\n' "$id" "$name"
   done
+}
+
+list_profiles() {
+  local kind="$1"
+  local directory="$2"
+
+  if [[ ! -d "$directory" ]]; then
+    log "no ${kind} profile directory found at ${directory}"
+    return
+  fi
+
+  local found=0
+  local id name
+  while IFS=$'\t' read -r id name; do
+    found=1
+    log "${kind} profile loaded: id=${id} name=${name}"
+  done < <(collect_profiles "$kind" "$directory")
+
+  if [[ "$found" -eq 0 ]]; then
+    log "no complete ${kind} profiles found in ${directory}"
+  fi
+}
+
+print_profile_array_json() {
+  local kind="$1"
+  local directory="$2"
+  local first=1
+  local id name
+
+  printf '"%s_profiles": [' "$kind"
+  while IFS=$'\t' read -r id name; do
+    if [[ "$first" -eq 0 ]]; then
+      printf ', '
+    fi
+    first=0
+    printf '{"id": "%s", "name": "%s"}' "$(json_escape "$id")" "$(json_escape "$name")"
+  done < <(collect_profiles "$kind" "$directory")
+  printf ']'
+}
+
+print_state_json() {
+  printf '{'
+  print_profile_array_json "device" "$DEVICE_PROFILE_DIR"
+  printf ', '
+  print_profile_array_json "performance" "$PERFORMANCE_PROFILE_DIR"
+  printf '}\n'
 }
 
 refresh_state() {
@@ -65,6 +117,16 @@ refresh_state() {
 }
 
 main() {
+  if [[ "${1:-}" == "--help" ]]; then
+    echo "Usage: pocketforge-daemon [--once|--json|--help]"
+    return
+  fi
+
+  if [[ "${1:-}" == "--json" ]]; then
+    print_state_json
+    return
+  fi
+
   refresh_state
 
   if [[ "${1:-}" == "--once" ]]; then
