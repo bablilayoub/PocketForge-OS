@@ -1,0 +1,7 @@
+{
+  "name": "Handheld OS",
+  "version": "0.1.0-alpha",
+  "base": "Universal Blue Kinoite",
+  "desktop": "KDE Plasma",
+  "target": "gaming handhelds"
+}
