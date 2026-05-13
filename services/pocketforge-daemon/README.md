@@ -6,9 +6,10 @@ This daemon will handle:
 
 - Device detection
 - Performance profiles
-- TDP control
-- Fan control where supported
 - Battery modes
 - Display settings
 - Per-game profile application
 - Communication with the Control Center and Overlay
+
+This service is currently a project placeholder. Early alpha builds should keep
+the daemon minimal until hardware-safe control paths are designed and tested.

@@ -5,8 +5,11 @@ COPY build_files /
 # Base Image
 FROM ghcr.io/ublue-os/kinoite-main:latest
 
-# Copy OS files before build.sh so systemd services exist
+# Copy OS files before build.sh so systemd services and firstboot scripts exist
+# before systemctl enable runs.
 COPY files/ /
+COPY scripts/firstboot.sh /usr/libexec/pocketforge-os/firstboot.sh
+COPY shared/device-profiles/ /usr/share/pocketforge/device-profiles/
 
 ### MODIFICATIONS
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
@@ -14,9 +17,6 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh
-
-COPY device-profiles/ /usr/share/pocketforge-os/device-profiles/
-COPY scripts/firstboot.sh /usr/libexec/pocketforge-os/firstboot.sh
 
 ### LINTING
 RUN bootc container lint
