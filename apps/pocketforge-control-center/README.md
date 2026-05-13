@@ -2,6 +2,15 @@
 
 Graphical handheld settings app for PocketForge OS.
 
+The current prototype is a dependency-free static dashboard. It renders the
+read-only profile inventory contract exposed by `pocketforge-daemon --json`.
+
+Open `index.html` directly, or serve the directory locally:
+
+```bash
+python3 -m http.server 8080 --directory apps/pocketforge-control-center
+```
+
 Planned features:
 
 - Dashboard

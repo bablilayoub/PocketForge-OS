@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PocketForge Control Center</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="rail" aria-label="PocketForge navigation">
+        <div class="brand-mark" aria-hidden="true">PF</div>
+        <nav>
+          <a class="active" href="#overview">Overview</a>
+          <a href="#profiles">Profiles</a>
+          <a href="#system">System</a>
+        </nav>
+      </aside>
+
+      <section class="workspace" id="overview">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">PocketForge OS</p>
+            <h1>Control Center</h1>
+          </div>
+          <div class="status-pill" id="contract-status">Loading</div>
+        </header>
+
+        <section class="summary-grid" aria-label="Profile summary">
+          <article>
+            <span class="metric-label">Device Profiles</span>
+            <strong id="device-count">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Performance Profiles</span>
+            <strong id="performance-count">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Mode</span>
+            <strong>Read Only</strong>
+          </article>
+        </section>
+
+        <section class="content-grid" id="profiles">
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Device Profiles</h2>
+              <span id="device-source">Daemon inventory</span>
+            </div>
+            <div class="profile-list" id="device-profiles"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Performance Profiles</h2>
+              <span>Metadata only</span>
+            </div>
+            <div class="profile-list" id="performance-profiles"></div>
+          </section>
+        </section>
+
+        <section class="panel contract-panel" id="system">
+          <div class="panel-heading">
+            <h2>Daemon Contract</h2>
+            <span>shared/api/daemon-inventory.schema.json</span>
+          </div>
+          <pre id="inventory-json" aria-label="Daemon inventory JSON"></pre>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

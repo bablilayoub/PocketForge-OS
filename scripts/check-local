@@ -18,6 +18,7 @@ echo "==> Validating JSON"
 jq empty \
   files/etc/pocketforge-os/config.json \
   files/usr/share/pocketforge-os/brand.json \
+  apps/pocketforge-control-center/sample-inventory.json \
   shared/api/daemon-inventory.schema.json \
   shared/device-profiles/schema.json \
   shared/performance-profiles/schema.json
@@ -30,6 +31,12 @@ bash -n scripts/check-local
 ruby -c scripts/validate-profiles.rb
 ruby -c scripts/validate-daemon-contract.rb
 ruby -c scripts/lib/pocketforge/schema_validator.rb
+
+echo "==> Checking Control Center prototype files"
+test -f apps/pocketforge-control-center/index.html
+test -f apps/pocketforge-control-center/app.js
+test -f apps/pocketforge-control-center/styles.css
+test -f apps/pocketforge-control-center/favicon.svg
 
 echo "==> Validating PocketForge profiles"
 ruby scripts/validate-profiles.rb
@@ -45,6 +52,7 @@ POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
 
 echo "==> Validating PocketForge daemon contract"
 ruby scripts/validate-daemon-contract.rb
+ruby -rjson -I scripts/lib -rpocketforge/schema_validator -e 'schema = JSON.parse(File.read("shared/api/daemon-inventory.schema.json")); data = JSON.parse(File.read("apps/pocketforge-control-center/sample-inventory.json")); errors = PocketForge::SchemaValidator.validate(data, schema); abort(errors.join("\n")) unless errors.empty?; puts "OK: Control Center sample inventory matches daemon contract"'
 
 if command -v rg >/dev/null 2>&1; then
   echo "==> Checking for blocked early-stage references"

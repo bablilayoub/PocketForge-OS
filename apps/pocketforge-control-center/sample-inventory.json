@@ -1,0 +1,18 @@
+{
+  "device_profiles": [
+    {
+      "id": "rog-ally-x",
+      "name": "ASUS ROG Ally X"
+    }
+  ],
+  "performance_profiles": [
+    {
+      "id": "balanced",
+      "name": "Balanced"
+    },
+    {
+      "id": "battery-saver",
+      "name": "Battery Saver"
+    }
+  ]
+}

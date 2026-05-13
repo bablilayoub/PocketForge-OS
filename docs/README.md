@@ -13,3 +13,4 @@ Current shared metadata schemas:
 
 Architecture notes live in `architecture.md`.
 Start with `development.md` for the current early-alpha development workflow.
+Testing notes live in `testing.md`.

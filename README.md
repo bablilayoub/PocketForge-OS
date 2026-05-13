@@ -109,6 +109,8 @@ During early alpha development, full image builds are intentionally manual or
 scheduled instead of running on every commit. Run `scripts/check-local` before
 committing active work.
 
+Testing guidance is available in `docs/testing.md`.
+
 ---
 
 ## Roadmap
