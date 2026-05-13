@@ -18,6 +18,7 @@ echo "==> Validating JSON"
 jq empty \
   files/etc/pocketforge-os/config.json \
   files/usr/share/pocketforge-os/brand.json \
+  shared/api/daemon-inventory.schema.json \
   shared/device-profiles/schema.json \
   shared/performance-profiles/schema.json
 
@@ -26,6 +27,9 @@ bash -n build_files/build.sh
 bash -n scripts/firstboot.sh
 bash -n scripts/pocketforge-daemon
 bash -n scripts/check-local
+ruby -c scripts/validate-profiles.rb
+ruby -c scripts/validate-daemon-contract.rb
+ruby -c scripts/lib/pocketforge/schema_validator.rb
 
 echo "==> Validating PocketForge profiles"
 ruby scripts/validate-profiles.rb
@@ -38,6 +42,9 @@ POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
 POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
 POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
   scripts/pocketforge-daemon --json | jq empty
+
+echo "==> Validating PocketForge daemon contract"
+ruby scripts/validate-daemon-contract.rb
 
 if command -v rg >/dev/null 2>&1; then
   echo "==> Checking for blocked early-stage references"

@@ -7,6 +7,7 @@ schema, performance profile schema, and contributor notes.
 
 Current shared metadata schemas:
 
+- `shared/api/daemon-inventory.schema.json`
 - `shared/device-profiles/schema.json`
 - `shared/performance-profiles/schema.json`
 
