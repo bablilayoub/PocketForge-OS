@@ -1,0 +1,11 @@
+[Unit]
+Description=Handheld OS First Boot Setup
+After=multi-user.target
+ConditionPathExists=!/var/lib/handheld-os/firstboot-complete
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/handheld-os/firstboot.sh
+
+[Install]
+WantedBy=multi-user.target
