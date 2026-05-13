@@ -15,8 +15,8 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh
 
-COPY device-profiles/ /usr/share/handheld-os/device-profiles/
-COPY scripts/firstboot.sh /usr/libexec/handheld-os/firstboot.sh
+COPY device-profiles/ /usr/share/pocketforge-os/device-profiles/
+COPY scripts/firstboot.sh /usr/libexec/pocketforge-os/firstboot.sh
 
 ### LINTING
 RUN bootc container lint

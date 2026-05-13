@@ -1,0 +1,11 @@
+[Unit]
+Description=PocketForge OS First Boot Setup
+After=multi-user.target
+ConditionPathExists=!/var/lib/pocketforge-os/firstboot-complete
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/pocketforge-os/firstboot.sh
+
+[Install]
+WantedBy=multi-user.target
