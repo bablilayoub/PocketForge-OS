@@ -2,10 +2,21 @@
 
 Background system service for PocketForge OS.
 
-This daemon will handle:
+The current daemon is a safe early skeleton. It starts as a systemd service,
+loads PocketForge device and performance profile metadata, and logs the profiles
+available on the image.
+
+Current behavior:
+
+- Read `/usr/share/pocketforge/device-profiles`
+- Read `/usr/share/pocketforge/performance-profiles`
+- Log detected profile IDs and names
+- Refresh metadata periodically
+
+Future responsibilities:
 
 - Device detection
-- Performance profiles
+- Performance profile application
 - Battery modes
 - Display settings
 - Per-game profile application

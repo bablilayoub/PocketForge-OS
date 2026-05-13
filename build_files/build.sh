@@ -36,4 +36,5 @@ dnf5 install -y \
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
+systemctl enable pocketforge-daemon.service
 systemctl enable pocketforge-firstboot.service

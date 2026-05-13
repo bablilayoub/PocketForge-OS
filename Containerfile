@@ -9,7 +9,9 @@ FROM ghcr.io/ublue-os/kinoite-main:latest
 # before systemctl enable runs.
 COPY files/ /
 COPY scripts/firstboot.sh /usr/libexec/pocketforge-os/firstboot.sh
+COPY scripts/pocketforge-daemon /usr/libexec/pocketforge-os/pocketforge-daemon
 COPY shared/device-profiles/ /usr/share/pocketforge/device-profiles/
+COPY shared/performance-profiles/ /usr/share/pocketforge/performance-profiles/
 
 ### MODIFICATIONS
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \

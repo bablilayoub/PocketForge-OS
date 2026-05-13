@@ -1,0 +1,13 @@
+[Unit]
+Description=PocketForge Daemon
+Documentation=https://github.com/bablilayoub/PocketForge-OS
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/libexec/pocketforge-os/pocketforge-daemon
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

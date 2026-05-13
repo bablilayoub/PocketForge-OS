@@ -45,6 +45,13 @@ jobs:
         run: |
           bash -n build_files/build.sh
           bash -n scripts/firstboot.sh
+          bash -n scripts/pocketforge-daemon
 
       - name: Validate PocketForge profiles
         run: ruby scripts/validate-profiles.rb
+
+      - name: Smoke test PocketForge daemon
+        run: |
+          POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+          POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+          scripts/pocketforge-daemon --once

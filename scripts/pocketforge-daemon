@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DEVICE_PROFILE_DIR="${POCKETFORGE_DEVICE_PROFILE_DIR:-/usr/share/pocketforge/device-profiles}"
+PERFORMANCE_PROFILE_DIR="${POCKETFORGE_PERFORMANCE_PROFILE_DIR:-/usr/share/pocketforge/performance-profiles}"
+REFRESH_INTERVAL="${POCKETFORGE_DAEMON_REFRESH_INTERVAL:-3600}"
+
+log() {
+  printf 'pocketforge-daemon: %s\n' "$*"
+}
+
+profile_field() {
+  local file="$1"
+  local field="$2"
+
+  awk -F: -v field="$field" '
+    $1 == field {
+      value = substr($0, index($0, ":") + 1)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", value)
+      gsub(/^"|"$/, "", value)
+      print value
+      exit
+    }
+  ' "$file"
+}
+
+list_profiles() {
+  local kind="$1"
+  local directory="$2"
+
+  if [[ ! -d "$directory" ]]; then
+    log "no ${kind} profile directory found at ${directory}"
+    return
+  fi
+
+  local files=()
+  while IFS= read -r -d '' file; do
+    files+=("$file")
+  done < <(find "$directory" -maxdepth 1 -type f -name '*.yml' -print0 | sort -z)
+
+  if [[ "${#files[@]}" -eq 0 ]]; then
+    log "no ${kind} profiles found in ${directory}"
+    return
+  fi
+
+  local file id name
+  for file in "${files[@]}"; do
+    id="$(profile_field "$file" id)"
+    name="$(profile_field "$file" name)"
+
+    if [[ -z "$id" || -z "$name" ]]; then
+      log "skipping incomplete ${kind} profile $(basename "$file")"
+      continue
+    fi
+
+    log "${kind} profile loaded: id=${id} name=${name}"
+  done
+}
+
+refresh_state() {
+  log "starting metadata refresh"
+  list_profiles "device" "$DEVICE_PROFILE_DIR"
+  list_profiles "performance" "$PERFORMANCE_PROFILE_DIR"
+  log "metadata refresh complete"
+}
+
+main() {
+  refresh_state
+
+  if [[ "${1:-}" == "--once" ]]; then
+    return
+  fi
+
+  trap 'log "stopping"; exit 0' INT TERM
+
+  while true; do
+    sleep "$REFRESH_INTERVAL" &
+    wait "$!"
+    refresh_state
+  done
+}
+
+main "$@"
