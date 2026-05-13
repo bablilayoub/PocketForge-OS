@@ -5,9 +5,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -22,36 +19,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Validate YAML files
-        run: |
-          ruby -e 'require "yaml"; ARGV.each { |f| YAML.load_stream(File.read(f)); puts "YAML OK: #{f}" }' \
-            .github/workflows/build.yml \
-            .github/workflows/build-disk.yml \
-            .github/workflows/validate.yml \
-            .github/dependabot.yml \
-            artifacthub-repo.yml \
-            shared/device-profiles/*.yml \
-            shared/performance-profiles/*.yml
-
-      - name: Validate JSON files
-        run: |
-          jq empty \
-            files/etc/pocketforge-os/config.json \
-            files/usr/share/pocketforge-os/brand.json \
-            shared/device-profiles/schema.json \
-            shared/performance-profiles/schema.json
-
-      - name: Validate shell scripts
-        run: |
-          bash -n build_files/build.sh
-          bash -n scripts/firstboot.sh
-          bash -n scripts/pocketforge-daemon
-
-      - name: Validate PocketForge profiles
-        run: ruby scripts/validate-profiles.rb
-
-      - name: Smoke test PocketForge daemon
-        run: |
-          POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
-          POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
-          scripts/pocketforge-daemon --once
+      - name: Run local checks
+        run: scripts/check-local

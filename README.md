@@ -105,6 +105,10 @@ The container image is published to GitHub Container Registry:
 ghcr.io/bablilayoub/pocketforge-os:latest
 ```
 
+During early alpha development, full image builds are intentionally manual or
+scheduled instead of running on every commit. Run `scripts/check-local` before
+committing active work.
+
 ---
 
 ## Roadmap

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+echo "==> Validating YAML"
+ruby -e 'require "yaml"; ARGV.each { |f| YAML.load_stream(File.read(f)); puts "YAML OK: #{f}" }' \
+  .github/workflows/build.yml \
+  .github/workflows/build-disk.yml \
+  .github/workflows/validate.yml \
+  .github/dependabot.yml \
+  artifacthub-repo.yml \
+  shared/device-profiles/*.yml \
+  shared/performance-profiles/*.yml
+
+echo "==> Validating JSON"
+jq empty \
+  files/etc/pocketforge-os/config.json \
+  files/usr/share/pocketforge-os/brand.json \
+  shared/device-profiles/schema.json \
+  shared/performance-profiles/schema.json
+
+echo "==> Validating shell scripts"
+bash -n build_files/build.sh
+bash -n scripts/firstboot.sh
+bash -n scripts/pocketforge-daemon
+bash -n scripts/check-local
+
+echo "==> Validating PocketForge profiles"
+ruby scripts/validate-profiles.rb
+
+echo "==> Smoke testing PocketForge daemon"
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+  scripts/pocketforge-daemon --once
+
+if command -v rg >/dev/null 2>&1; then
+  echo "==> Checking for blocked early-stage references"
+  if rg -n "HHD|hhd|image-template|disk_config/iso\\.toml|Handheld OS|handheld-os" . .github -g '!scripts/check-local'; then
+    echo "Blocked reference found" >&2
+    exit 1
+  fi
+fi
+
+echo "==> Checking diff whitespace"
+git diff --check
+
+echo "All local checks passed."
