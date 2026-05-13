@@ -1,4 +1,5 @@
 {
+  "osName": "PocketForge OS",
   "defaultPerformanceMode": "balanced",
   "firstBootWizard": true,
   "gamingMode": true,
