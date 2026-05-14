@@ -12,7 +12,8 @@ the custom handheld stack is finished.
 - PocketForge firstboot service is installed and enabled.
 - PocketForge Daemon is installed, enabled, and read-only.
 - Daemon JSON inventory contract is validated.
-- Control Center prototype can display daemon inventory metadata.
+- Control Center prototype is installed in the image and can display daemon
+  inventory metadata.
 - Device profiles exist for the first target handheld families.
 - Performance profiles are metadata-only and validated.
 - Local checks pass with `scripts/check-local`.
@@ -40,5 +41,6 @@ the custom handheld stack is finished.
 - [ ] `pocketforge-daemon.service` is enabled in the image.
 - [ ] `pocketforge-firstboot.service` completes once.
 - [ ] `journalctl -u pocketforge-daemon` shows loaded profiles.
+- [ ] PocketForge Control Center launcher opens the prototype.
 - [ ] Control Center prototype displays the expected inventory.
 - [ ] Release notes call out early alpha risks clearly.

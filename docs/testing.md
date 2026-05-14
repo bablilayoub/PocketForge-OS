@@ -69,6 +69,15 @@ For local image work, install Podman and use:
 podman build --platform linux/amd64 --pull=newer --tag pocketforge-os:alpha-test .
 ```
 
+After building, check the installed Control Center files:
+
+```bash
+podman run --rm --platform linux/amd64 pocketforge-os:alpha-test \
+  test -f /usr/share/applications/pocketforge-control-center.desktop
+podman run --rm --platform linux/amd64 pocketforge-os:alpha-test \
+  test -f /usr/share/pocketforge/control-center/index.html
+```
+
 For VM or ISO work, use the Justfile helpers only on a machine with enough disk
 space, virtualization support, and rootful Podman:
 

@@ -35,6 +35,7 @@ check_file files/etc/systemd/system/pocketforge-daemon.service "Daemon systemd u
 check_file files/etc/systemd/system/pocketforge-firstboot.service "Firstboot systemd unit exists"
 check_file scripts/pocketforge-daemon "Daemon executable exists"
 check_file apps/pocketforge-control-center/index.html "Control Center prototype exists"
+check_file files/usr/share/applications/pocketforge-control-center.desktop "Control Center desktop launcher exists"
 check_file shared/api/daemon-inventory.schema.json "Daemon inventory schema exists"
 
 device_count="$(find shared/device-profiles -maxdepth 1 -type f -name '*.yml' | wc -l | tr -d ' ')"

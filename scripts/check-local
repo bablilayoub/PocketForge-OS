@@ -44,6 +44,7 @@ test -f apps/pocketforge-control-center/index.html
 test -f apps/pocketforge-control-center/app.js
 test -f apps/pocketforge-control-center/styles.css
 test -f apps/pocketforge-control-center/favicon.svg
+test -f files/usr/share/applications/pocketforge-control-center.desktop
 
 echo "==> Validating PocketForge profiles"
 ruby scripts/validate-profiles.rb

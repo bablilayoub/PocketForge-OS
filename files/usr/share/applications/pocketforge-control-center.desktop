@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=PocketForge Control Center
+Comment=View PocketForge OS handheld profiles and daemon status
+Exec=xdg-open file:///usr/share/pocketforge/control-center/index.html
+Icon=/usr/share/pocketforge/control-center/favicon.svg
+Terminal=false
+Categories=System;Settings;
+Keywords=PocketForge;Handheld;Gaming;Profiles;

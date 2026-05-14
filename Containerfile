@@ -10,6 +10,7 @@ FROM ghcr.io/ublue-os/kinoite-main:latest
 COPY files/ /
 COPY scripts/firstboot.sh /usr/libexec/pocketforge-os/firstboot.sh
 COPY scripts/pocketforge-daemon /usr/libexec/pocketforge-os/pocketforge-daemon
+COPY apps/pocketforge-control-center/ /usr/share/pocketforge/control-center/
 COPY shared/device-profiles/ /usr/share/pocketforge/device-profiles/
 COPY shared/performance-profiles/ /usr/share/pocketforge/performance-profiles/
 
