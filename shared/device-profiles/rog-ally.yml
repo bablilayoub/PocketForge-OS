@@ -1,0 +1,18 @@
+id: rog-ally
+name: ASUS ROG Ally
+
+display:
+  resolution: "1920x1080"
+  refresh_rates:
+    - 60
+    - 120
+
+controls:
+  gyro: true
+  back_buttons: true
+  rgb: true
+
+launchers:
+  steam: true
+  heroic: true
+  lutris: true

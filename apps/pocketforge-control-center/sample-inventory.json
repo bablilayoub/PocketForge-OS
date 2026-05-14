@@ -6,8 +6,24 @@
   },
   "device_profiles": [
     {
+      "id": "legion-go",
+      "name": "Lenovo Legion Go"
+    },
+    {
       "id": "rog-ally-x",
       "name": "ASUS ROG Ally X"
+    },
+    {
+      "id": "rog-ally",
+      "name": "ASUS ROG Ally"
+    },
+    {
+      "id": "steam-deck-lcd",
+      "name": "Steam Deck LCD"
+    },
+    {
+      "id": "steam-deck-oled",
+      "name": "Steam Deck OLED"
     }
   ],
   "performance_profiles": [

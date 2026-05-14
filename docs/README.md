@@ -13,4 +13,7 @@ Current shared metadata schemas:
 
 Architecture notes live in `architecture.md`.
 Start with `development.md` for the current early-alpha development workflow.
+Alpha readiness is tracked in `alpha-readiness.md`.
+Release checks live in `release-checklist.md`.
+Profile schema notes live in `profile-schema.md`.
 Testing notes live in `testing.md`.

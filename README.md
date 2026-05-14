@@ -110,6 +110,7 @@ scheduled instead of running on every commit. Run `scripts/check-local` before
 committing active work.
 
 Testing guidance is available in `docs/testing.md`.
+Alpha readiness is tracked in `docs/alpha-readiness.md`.
 
 ---
 

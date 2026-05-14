@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+OUTPUT="$ROOT/apps/pocketforge-control-center/sample-inventory.json"
+
+generate_inventory() {
+  POCKETFORGE_DEVICE_PROFILE_DIR="$ROOT/shared/device-profiles" \
+  POCKETFORGE_PERFORMANCE_PROFILE_DIR="$ROOT/shared/performance-profiles" \
+    "$ROOT/scripts/pocketforge-daemon" --json | jq .
+}
+
+if [[ "${1:-}" == "--check" ]]; then
+  tmp="$(mktemp)"
+  trap 'rm -f "$tmp"' EXIT
+  generate_inventory > "$tmp"
+
+  if ! diff -u "$OUTPUT" "$tmp"; then
+    echo "Control Center sample inventory is out of sync." >&2
+    echo "Run scripts/sync-control-center-sample to update it." >&2
+    exit 1
+  fi
+
+  echo "OK: Control Center sample inventory is synced"
+  exit 0
+fi
+
+generate_inventory > "$OUTPUT"
+echo "Updated $OUTPUT"

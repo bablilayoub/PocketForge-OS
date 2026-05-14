@@ -1,0 +1,17 @@
+id: steam-deck-lcd
+name: Steam Deck LCD
+
+display:
+  resolution: "1280x800"
+  refresh_rates:
+    - 60
+
+controls:
+  gyro: true
+  back_buttons: true
+  trackpads: true
+
+launchers:
+  steam: true
+  heroic: true
+  lutris: true

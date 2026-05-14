@@ -28,6 +28,7 @@ bash -n build_files/build.sh
 bash -n scripts/firstboot.sh
 bash -n scripts/pocketforge-daemon
 bash -n scripts/check-local
+bash -n scripts/sync-control-center-sample
 ruby -c scripts/validate-profiles.rb
 ruby -c scripts/validate-daemon-contract.rb
 ruby -c scripts/lib/pocketforge/schema_validator.rb
@@ -53,6 +54,7 @@ POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
 echo "==> Validating PocketForge daemon contract"
 ruby scripts/validate-daemon-contract.rb
 ruby -rjson -I scripts/lib -rpocketforge/schema_validator -e 'schema = JSON.parse(File.read("shared/api/daemon-inventory.schema.json")); data = JSON.parse(File.read("apps/pocketforge-control-center/sample-inventory.json")); errors = PocketForge::SchemaValidator.validate(data, schema); abort(errors.join("\n")) unless errors.empty?; puts "OK: Control Center sample inventory matches daemon contract"'
+scripts/sync-control-center-sample --check
 
 if command -v rg >/dev/null 2>&1; then
   echo "==> Checking for blocked early-stage references"

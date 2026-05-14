@@ -1,0 +1,19 @@
+id: legion-go
+name: Lenovo Legion Go
+
+display:
+  resolution: "2560x1600"
+  refresh_rates:
+    - 60
+    - 144
+
+controls:
+  gyro: true
+  back_buttons: true
+  detachable_controllers: true
+  trackpad: true
+
+launchers:
+  steam: true
+  heroic: true
+  lutris: true
