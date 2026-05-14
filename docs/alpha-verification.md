@@ -39,5 +39,13 @@ Verified inside the built image:
 
 - Manual GitHub `Validate project files` workflow.
 - Manual GitHub `Build container image` workflow.
+- QCOW2 generation in a rootful Podman environment.
 - VM boot to KDE Plasma.
 - Hardware smoke test on spare or recoverable handheld hardware.
+
+## Known Local Limitation
+
+QCOW2 generation was attempted locally with bootc-image-builder, but the local
+Podman environment is rootless. bootc-image-builder requires rootful Podman for
+disk image generation, so VM artifact testing must run on a rootful Linux build
+host or through the manual GitHub disk-image workflow.

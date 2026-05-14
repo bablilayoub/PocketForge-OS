@@ -26,7 +26,7 @@ If `skopeo` is unavailable, check the GHCR package page in GitHub.
 
 ## VM Smoke Test
 
-On a machine with Podman, virtualization support, and enough disk space:
+On a machine with rootful Podman, virtualization support, and enough disk space:
 
 ```bash
 just rebuild-qcow2

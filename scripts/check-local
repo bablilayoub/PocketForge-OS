@@ -34,6 +34,11 @@ ruby -c scripts/validate-profiles.rb
 ruby -c scripts/validate-daemon-contract.rb
 ruby -c scripts/lib/pocketforge/schema_validator.rb
 
+if command -v just >/dev/null 2>&1; then
+  echo "==> Validating Justfile"
+  just --unstable --fmt --check -f Justfile
+fi
+
 echo "==> Checking Control Center prototype files"
 test -f apps/pocketforge-control-center/index.html
 test -f apps/pocketforge-control-center/app.js

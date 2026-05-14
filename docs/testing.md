@@ -70,12 +70,16 @@ podman build --platform linux/amd64 --pull=newer --tag pocketforge-os:alpha-test
 ```
 
 For VM or ISO work, use the Justfile helpers only on a machine with enough disk
-space and virtualization support:
+space, virtualization support, and rootful Podman:
 
 ```bash
 just rebuild-qcow2
 just run-vm-qcow2
 ```
+
+bootc-image-builder requires rootful Podman for disk image generation. If your
+local Podman environment is rootless, use the manual `Build disk images` GitHub
+workflow instead.
 
 ## Hardware Testing
 
