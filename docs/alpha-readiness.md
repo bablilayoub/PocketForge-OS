@@ -45,3 +45,4 @@ the custom handheld stack is finished.
 - [ ] PocketForge Control Center launcher opens the prototype.
 - [ ] Control Center prototype displays the expected inventory.
 - [ ] Release notes call out early alpha risks clearly.
+- [ ] Public alpha notes are prepared from `docs/alpha-release-notes.md`.

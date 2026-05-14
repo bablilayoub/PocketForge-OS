@@ -60,3 +60,5 @@ Every alpha release must say:
 - Keep recovery media ready.
 - Custom handheld controls are metadata-only/read-only for now.
 - No TDP, fan, firmware, or embedded-controller writes are included yet.
+
+Use `docs/alpha-release-notes.md` as the starting draft for public alpha notes.

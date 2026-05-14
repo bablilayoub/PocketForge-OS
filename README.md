@@ -113,6 +113,7 @@ Testing guidance is available in `docs/testing.md`.
 Alpha boot testing is documented in `docs/alpha-boot-runbook.md`.
 Alpha readiness is tracked in `docs/alpha-readiness.md`.
 Hardware support status is documented in `docs/hardware-support.md`.
+Draft alpha release notes live in `docs/alpha-release-notes.md`.
 
 ---
 
