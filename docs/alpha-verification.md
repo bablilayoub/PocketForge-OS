@@ -39,12 +39,26 @@ Verified inside the built image:
 - Firstboot script runs successfully.
 - Steam, Gamescope, MangoHud, GameMode, Fastfetch, and btop are installed.
 
+## GitHub Actions Verification
+
+Manual workflow runs on 2026-05-14:
+
+- `Validate project files` passed on commit `c8834568`.
+  Run: https://github.com/bablilayoub/PocketForge-OS/actions/runs/25865214786
+- `Build container image` passed on commit `c8834568`.
+  Run: https://github.com/bablilayoub/PocketForge-OS/actions/runs/25865214776
+- `Build disk images` passed on commit `a611e9a`.
+  Run: https://github.com/bablilayoub/PocketForge-OS/actions/runs/25866067490
+
+The disk-image workflow completed both matrix jobs:
+
+- QCOW2 job uploaded its artifact successfully.
+- Anaconda ISO job uploaded its artifact successfully.
+
 ## Remaining Alpha Gates
 
-- Manual GitHub `Validate project files` workflow.
-- Manual GitHub `Build container image` workflow.
-- QCOW2 generation in a rootful Podman environment.
 - VM boot to KDE Plasma.
+- ISO installer boot test.
 - Hardware smoke test on spare or recoverable handheld hardware.
 
 ## Known Local Limitation
