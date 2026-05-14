@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=PocketForge Gaming Mode
+Comment=Steam Big Picture through Gamescope
+Exec=/usr/libexec/pocketforge-os/pocketforge-gamescope-session
+TryExec=/usr/bin/gamescope
+Type=Application
+DesktopNames=gamescope

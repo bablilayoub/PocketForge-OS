@@ -47,12 +47,14 @@ require_file /etc/systemd/system/multi-user.target.wants/pocketforge-firstboot.s
 echo "==> Checking installed PocketForge assets"
 require_file /usr/libexec/pocketforge-os/pocketforge-daemon
 require_file /usr/libexec/pocketforge-os/firstboot.sh
+require_file /usr/libexec/pocketforge-os/pocketforge-gamescope-session
 require_file /usr/share/pocketforge/device-profiles/steam-deck-oled.yml
 require_file /usr/share/pocketforge/device-profiles/rog-ally-x.yml
 require_file /usr/share/pocketforge/performance-profiles/balanced.yml
 require_file /usr/share/pocketforge/control-center/index.html
 require_file /usr/share/pocketforge/control-center/app.js
 require_file /usr/share/applications/pocketforge-control-center.desktop
+require_file /usr/share/wayland-sessions/pocketforge-gaming-mode.desktop
 
 echo "==> Checking gaming/runtime packages"
 require_package steam

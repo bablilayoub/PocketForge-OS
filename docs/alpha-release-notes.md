@@ -24,6 +24,8 @@ The image includes:
 - Gamescope.
 - MangoHud.
 - GameMode.
+- Experimental PocketForge Gaming Mode session for Steam Big Picture through
+  Gamescope.
 - PocketForge Daemon in read-only metadata mode.
 - PocketForge Control Center prototype.
 - Device profile metadata.
@@ -53,6 +55,7 @@ This alpha intentionally does not include:
 - Production installer polish.
 - Production recovery UX.
 - Stable gaming-session switching.
+- Polished Gaming Mode session switching.
 
 ## Before Testing
 

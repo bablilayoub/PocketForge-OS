@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v steam >/dev/null 2>&1; then
+  echo "PocketForge Gaming Mode requires Steam." >&2
+  exit 1
+fi
+
+if ! command -v gamescope >/dev/null 2>&1; then
+  echo "Gamescope not found; starting Steam Big Picture without Gamescope." >&2
+  exec steam -gamepadui
+fi
+
+exec gamescope --steam -- steam -gamepadui

@@ -9,6 +9,7 @@ the custom handheld stack is finished.
 - Fedora Atomic / Universal Blue Kinoite base builds successfully.
 - KDE Plasma desktop is present.
 - Steam, Gamescope, MangoHud, and GameMode are installed.
+- Experimental PocketForge Gaming Mode session is installed.
 - PocketForge firstboot service is installed and enabled.
 - PocketForge Daemon is installed, enabled, and read-only.
 - Daemon JSON inventory contract is validated.
@@ -28,7 +29,7 @@ the custom handheld stack is finished.
 - Automatic device-specific tuning beyond read-only detection
 - Installer polish
 - Production recovery UX
-- Stable gaming-session switching
+- Stable gaming-session switching beyond the experimental Gamescope session
 
 ## Alpha Exit Checklist
 
@@ -40,6 +41,7 @@ the custom handheld stack is finished.
 - [ ] Published GHCR image can be pulled.
 - [ ] Alpha boot runbook has been followed for the candidate.
 - [ ] VM boot test reaches KDE Plasma.
+- [ ] PocketForge Gaming Mode session starts Steam Big Picture through Gamescope.
 - [ ] `pocketforge-daemon.service` is enabled in the image.
 - [ ] `pocketforge-firstboot.service` completes once.
 - [ ] `journalctl -u pocketforge-daemon` shows loaded profiles.

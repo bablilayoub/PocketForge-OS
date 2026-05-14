@@ -9,6 +9,8 @@ stable while the handheld stack grows.
 - **PocketForge Control Center**: graphical settings app for handheld mode,
   profiles, updates, and device information.
 - **PocketForge Overlay**: in-game quick settings surface.
+- **PocketForge Gaming Mode**: experimental Gamescope session for Steam Big
+  Picture.
 - **Device Profiles**: shared YAML metadata for supported handhelds.
 - **Performance Profiles**: shared YAML metadata for safe operating intents.
 

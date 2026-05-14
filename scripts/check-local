@@ -27,6 +27,7 @@ echo "==> Validating shell scripts"
 bash -n build_files/build.sh
 bash -n scripts/firstboot.sh
 bash -n scripts/pocketforge-daemon
+bash -n files/usr/libexec/pocketforge-os/pocketforge-gamescope-session
 bash -n scripts/check-local
 bash -n scripts/image-smoke
 bash -n scripts/sync-control-center-sample
@@ -46,6 +47,7 @@ test -f apps/pocketforge-control-center/app.js
 test -f apps/pocketforge-control-center/styles.css
 test -f apps/pocketforge-control-center/favicon.svg
 test -f files/usr/share/applications/pocketforge-control-center.desktop
+test -f files/usr/share/wayland-sessions/pocketforge-gaming-mode.desktop
 
 echo "==> Validating PocketForge profiles"
 ruby scripts/validate-profiles.rb

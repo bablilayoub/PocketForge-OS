@@ -20,7 +20,7 @@ Result:
 Image ID:
 
 ```txt
-3def2117a62751b5d7722b57368b2de4af25c7c21d5d5c64269e6cf8600e72a4
+8b2915e7904e54f817ecff8c5374a37eda0a6b3661759470bb7553a60b77d38e
 ```
 
 ## Image Smoke Checks
@@ -35,6 +35,7 @@ Verified inside the built image:
 - Performance profiles are installed in `/usr/share/pocketforge/performance-profiles/`.
 - Control Center prototype is installed in `/usr/share/pocketforge/control-center/`.
 - Control Center desktop launcher is installed.
+- PocketForge Gaming Mode session is installed.
 - Firstboot script runs successfully.
 - Steam, Gamescope, MangoHud, GameMode, Fastfetch, and btop are installed.
 

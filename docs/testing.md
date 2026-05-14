@@ -83,6 +83,10 @@ If you built with the default Justfile tag, use:
 just smoke-image
 ```
 
+The image smoke checks confirm that the PocketForge Gaming Mode session file is
+installed. The VM boot test must still confirm that the session can start Steam
+Big Picture through Gamescope.
+
 For VM or ISO work, use the Justfile helpers only on a machine with enough disk
 space, virtualization support, and rootful Podman:
 

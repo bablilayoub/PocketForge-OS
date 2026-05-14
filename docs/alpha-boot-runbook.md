@@ -72,6 +72,7 @@ The VM passes alpha boot smoke when:
 - KDE Plasma reaches the desktop.
 - Network is available.
 - Steam launches or reaches its login/update flow.
+- PocketForge Gaming Mode starts Steam Big Picture through Gamescope.
 - The PocketForge Control Center launcher is visible.
 - The PocketForge Control Center opens the installed prototype.
 - No systemd unit is failed after first boot.
