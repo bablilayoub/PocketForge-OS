@@ -28,6 +28,7 @@ bash -n build_files/build.sh
 bash -n scripts/firstboot.sh
 bash -n scripts/pocketforge-daemon
 bash -n scripts/check-local
+bash -n scripts/image-smoke
 bash -n scripts/sync-control-center-sample
 bash -n scripts/alpha-status
 ruby -c scripts/validate-profiles.rb

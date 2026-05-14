@@ -22,6 +22,9 @@ current daemon smoke test.
 
 During heavy development, batch related changes locally, run `scripts/check-local`,
 then manually run the full image build when the runtime or image layout changes.
+After a successful image build, run `scripts/image-smoke pocketforge-os:alpha-test`
+to verify the installed services, profiles, Control Center launcher, and core
+gaming packages.
 
 For alpha milestone checks, run:
 

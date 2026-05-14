@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+IMAGE="${1:-pocketforge-os:alpha-test}"
+PLATFORM="${PLATFORM:-linux/amd64}"
+
+run_in_image() {
+  podman run --rm --platform "$PLATFORM" "$IMAGE" "$@"
+}
+
+require_file() {
+  local path="$1"
+
+  run_in_image test -f "$path"
+  echo "OK: $path"
+}
+
+require_package() {
+  local package="$1"
+
+  run_in_image rpm -q "$package" >/dev/null
+  echo "OK: package $package"
+}
+
+if ! command -v podman >/dev/null 2>&1; then
+  echo "podman is required for image smoke checks" >&2
+  exit 1
+fi
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo "jq is required for daemon JSON validation" >&2
+  exit 1
+fi
+
+podman image exists "$IMAGE"
+
+echo "==> Inspecting image"
+podman image inspect "$IMAGE" --format '{{.Id}} {{.Architecture}} {{.Os}}'
+
+echo "==> Validating daemon inventory"
+run_in_image /usr/libexec/pocketforge-os/pocketforge-daemon --json | jq empty
+
+echo "==> Checking enabled services"
+require_file /etc/systemd/system/multi-user.target.wants/pocketforge-daemon.service
+require_file /etc/systemd/system/multi-user.target.wants/pocketforge-firstboot.service
+
+echo "==> Checking installed PocketForge assets"
+require_file /usr/libexec/pocketforge-os/pocketforge-daemon
+require_file /usr/libexec/pocketforge-os/firstboot.sh
+require_file /usr/share/pocketforge/device-profiles/steam-deck-oled.yml
+require_file /usr/share/pocketforge/device-profiles/rog-ally-x.yml
+require_file /usr/share/pocketforge/performance-profiles/balanced.yml
+require_file /usr/share/pocketforge/control-center/index.html
+require_file /usr/share/pocketforge/control-center/app.js
+require_file /usr/share/applications/pocketforge-control-center.desktop
+
+echo "==> Checking gaming/runtime packages"
+require_package steam
+require_package gamescope
+require_package mangohud
+require_package gamemode
+require_package xdg-utils
+
+echo "Image smoke checks passed for $IMAGE."

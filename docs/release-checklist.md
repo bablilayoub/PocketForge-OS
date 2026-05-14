@@ -14,6 +14,13 @@ Confirm the working tree is clean, then manually run:
 - `Validate project files`
 - `Build container image`
 
+For a local build candidate, run:
+
+```bash
+podman build --platform linux/amd64 --pull=newer --tag pocketforge-os:alpha-test .
+scripts/image-smoke pocketforge-os:alpha-test
+```
+
 ## After Build
 
 Confirm the image exists:
