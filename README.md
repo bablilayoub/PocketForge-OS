@@ -111,6 +111,7 @@ committing active work.
 
 Testing guidance is available in `docs/testing.md`.
 Alpha readiness is tracked in `docs/alpha-readiness.md`.
+Hardware support status is documented in `docs/hardware-support.md`.
 
 ---
 
@@ -126,11 +127,12 @@ Alpha readiness is tracked in `docs/alpha-readiness.md`.
 
 ### Phase 2 — Handheld Foundation
 
-- [ ] Build PocketForge Daemon
-- [ ] Build PocketForge Control Center
+- [x] Build PocketForge Daemon skeleton
+- [x] Build PocketForge Control Center prototype
 - [ ] Build PocketForge Overlay
+- [x] Add metadata-only device profiles
+- [x] Add metadata-only performance profiles
 - [ ] Add device detection
-- [ ] Add performance profiles
 - [ ] Add Steam gaming session
 - [ ] Add better Gamescope configuration
 - [ ] Add Flatpak app setup
@@ -139,8 +141,9 @@ Alpha readiness is tracked in `docs/alpha-readiness.md`.
 
 - [ ] Build Tauri + React app
 - [ ] Show device info
-- [ ] Show battery and performance state
-- [ ] Add performance profiles
+- [x] Show profile inventory
+- [ ] Show battery and runtime state
+- [x] Add read-only performance profiles
 - [ ] Add per-device settings
 - [ ] Add update UI
 
