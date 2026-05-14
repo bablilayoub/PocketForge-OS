@@ -7,6 +7,10 @@ OUTPUT="$ROOT/apps/pocketforge-control-center/sample-inventory.json"
 generate_inventory() {
   POCKETFORGE_DEVICE_PROFILE_DIR="$ROOT/shared/device-profiles" \
   POCKETFORGE_PERFORMANCE_PROFILE_DIR="$ROOT/shared/performance-profiles" \
+  POCKETFORGE_DMI_SYS_VENDOR="PocketForge Sample" \
+  POCKETFORGE_DMI_PRODUCT_NAME="Unknown Handheld" \
+  POCKETFORGE_DMI_PRODUCT_VERSION="sample" \
+  POCKETFORGE_DMI_BOARD_NAME="sample" \
     "$ROOT/scripts/pocketforge-daemon" --json | jq .
 }
 

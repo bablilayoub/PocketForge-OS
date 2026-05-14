@@ -6,10 +6,10 @@
   },
   "detection": {
     "system": {
-      "sys_vendor": "",
-      "product_name": "",
-      "product_version": "",
-      "board_name": ""
+      "sys_vendor": "PocketForge Sample",
+      "product_name": "Unknown Handheld",
+      "product_version": "sample",
+      "board_name": "sample"
     },
     "current_device": {
       "matched": false,
