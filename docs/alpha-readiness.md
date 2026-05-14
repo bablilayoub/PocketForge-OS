@@ -32,6 +32,7 @@ the custom handheld stack is finished.
 
 - [ ] `scripts/alpha-status` reports local alpha foundation readiness.
 - [ ] `scripts/check-local` passes.
+- [x] Local AMD64 container image build completes.
 - [ ] Manual `Validate project files` workflow passes.
 - [ ] Manual `Build container image` workflow passes.
 - [ ] Published GHCR image can be pulled.

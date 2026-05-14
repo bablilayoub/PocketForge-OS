@@ -66,7 +66,7 @@ Use GitHub Actions:
 For local image work, install Podman and use:
 
 ```bash
-just build
+podman build --platform linux/amd64 --pull=newer --tag pocketforge-os:alpha-test .
 ```
 
 For VM or ISO work, use the Justfile helpers only on a machine with enough disk
