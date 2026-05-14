@@ -37,6 +37,7 @@ the custom handheld stack is finished.
 - [ ] Manual `Validate project files` workflow passes.
 - [ ] Manual `Build container image` workflow passes.
 - [ ] Published GHCR image can be pulled.
+- [ ] Alpha boot runbook has been followed for the candidate.
 - [ ] VM boot test reaches KDE Plasma.
 - [ ] `pocketforge-daemon.service` is enabled in the image.
 - [ ] `pocketforge-firstboot.service` completes once.

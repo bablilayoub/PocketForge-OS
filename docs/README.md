@@ -13,6 +13,7 @@ Current shared metadata schemas:
 
 Architecture notes live in `architecture.md`.
 Start with `development.md` for the current early-alpha development workflow.
+Alpha boot testing is documented in `alpha-boot-runbook.md`.
 Alpha readiness is tracked in `alpha-readiness.md`.
 Alpha verification notes live in `alpha-verification.md`.
 Hardware support status lives in `hardware-support.md`.

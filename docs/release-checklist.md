@@ -48,6 +48,9 @@ systemctl status pocketforge-firstboot.service
 journalctl -u pocketforge-daemon --no-pager
 ```
 
+Follow `docs/alpha-boot-runbook.md` for the full VM and hardware smoke path
+before announcing an alpha.
+
 ## Release Notes
 
 Every alpha release must say:

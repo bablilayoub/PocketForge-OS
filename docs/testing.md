@@ -3,6 +3,8 @@
 PocketForge OS is early alpha. Prefer layered testing before installing on real
 hardware.
 
+For full alpha candidate testing, follow `docs/alpha-boot-runbook.md`.
+
 ## Fast Local Checks
 
 Run this before commits:
@@ -98,3 +100,5 @@ workflow instead.
 Do not install PocketForge OS on a main device yet. Use spare hardware or a
 replaceable drive, keep recovery media ready, and confirm rollback or reinstall
 steps before testing.
+
+Use `docs/alpha-boot-runbook.md` for the VM and hardware smoke checklist.
