@@ -1,6 +1,15 @@
 id: rog-ally-x
 name: ASUS ROG Ally X
 
+detection:
+  dmi:
+    sys_vendor:
+      - ASUSTeK COMPUTER INC.
+      - ASUSTeK COMPUTER INC
+    product_name:
+      - RC72LA
+      - ROG Ally X
+
 display:
   resolution: "1920x1080"
   refresh_rates:

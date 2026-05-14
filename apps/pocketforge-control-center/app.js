@@ -1,8 +1,22 @@
 const fallbackInventory = {
   daemon: {
     name: "pocketforge-daemon",
-    contract_version: "0.1",
+    contract_version: "0.2",
     mode: "read-only",
+  },
+  detection: {
+    system: {
+      sys_vendor: "",
+      product_name: "",
+      product_version: "",
+      board_name: "",
+    },
+    current_device: {
+      matched: false,
+      id: "unknown",
+      name: "Unknown device",
+      matched_on: "none",
+    },
   },
   device_profiles: [
     {
@@ -68,8 +82,11 @@ function renderProfiles(id, profiles) {
 }
 
 function renderInventory(inventory) {
+  const currentDevice = inventory.detection?.current_device ?? fallbackInventory.detection.current_device;
+
   document.getElementById("device-count").textContent = inventory.device_profiles.length;
   document.getElementById("performance-count").textContent = inventory.performance_profiles.length;
+  document.getElementById("detected-device").textContent = currentDevice.name;
   document.getElementById("daemon-mode").textContent = inventory.daemon.mode;
   document.getElementById("contract-version").textContent = inventory.daemon.contract_version;
   document.getElementById("daemon-name").textContent = inventory.daemon.name;

@@ -20,7 +20,7 @@ Result:
 Image ID:
 
 ```txt
-f3999d2fa11d13ffe5f7f0b8a31396a67a17dee97e245a4a2bf6c53f3d0492c3
+3def2117a62751b5d7722b57368b2de4af25c7c21d5d5c64269e6cf8600e72a4
 ```
 
 ## Image Smoke Checks
@@ -28,6 +28,7 @@ f3999d2fa11d13ffe5f7f0b8a31396a67a17dee97e245a4a2bf6c53f3d0492c3
 Verified inside the built image:
 
 - `pocketforge-daemon --json` returns valid daemon inventory.
+- Read-only DMI detection matches known profile metadata with override values.
 - `pocketforge-daemon.service` is enabled.
 - `pocketforge-firstboot.service` is enabled.
 - Device profiles are installed in `/usr/share/pocketforge/device-profiles/`.

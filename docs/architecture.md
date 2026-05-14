@@ -22,8 +22,8 @@ pocketforge-daemon --json
 ```
 
 The JSON output must match `shared/api/daemon-inventory.schema.json`. The
-contract includes daemon metadata, supported device profiles, and available
-performance profiles.
+contract includes daemon metadata, read-only DMI device detection, supported
+device profiles, and available performance profiles.
 
 The Control Center should treat this as the first read-only contract. Hardware
 control APIs will be designed separately and added only after they can be tested

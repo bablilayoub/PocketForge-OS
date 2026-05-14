@@ -11,10 +11,15 @@ Required fields:
 
 - `id`: lowercase kebab-case identifier
 - `name`: user-visible device name
+- `detection.dmi`: read-only DMI match metadata
 - `display.resolution`: native resolution in `WIDTHxHEIGHT` format
 - `display.refresh_rates`: supported refresh-rate metadata
 - `controls`: boolean feature map
 - `launchers`: boolean launcher support map
+
+DMI detection keys are substring matches against `/sys/class/dmi/id` values.
+Use conservative values such as product codes to avoid matching the wrong
+handheld model.
 
 ## Performance Profiles
 

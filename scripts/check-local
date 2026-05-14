@@ -59,6 +59,39 @@ POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
 POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
   scripts/pocketforge-daemon --json | jq empty
 
+echo "==> Testing read-only device detection"
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+POCKETFORGE_DMI_SYS_VENDOR="ASUSTeK COMPUTER INC." \
+POCKETFORGE_DMI_PRODUCT_NAME="RC71L" \
+  scripts/pocketforge-daemon --json | jq -e '.detection.current_device.id == "rog-ally"' >/dev/null
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+POCKETFORGE_DMI_SYS_VENDOR="ASUSTeK COMPUTER INC." \
+POCKETFORGE_DMI_PRODUCT_NAME="RC72LA" \
+  scripts/pocketforge-daemon --json | jq -e '.detection.current_device.id == "rog-ally-x"' >/dev/null
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+POCKETFORGE_DMI_SYS_VENDOR="LENOVO" \
+POCKETFORGE_DMI_PRODUCT_NAME="83E1" \
+POCKETFORGE_DMI_PRODUCT_VERSION="Legion Go 8APU1" \
+  scripts/pocketforge-daemon --json | jq -e '.detection.current_device.id == "legion-go"' >/dev/null
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+POCKETFORGE_DMI_SYS_VENDOR="Valve" \
+POCKETFORGE_DMI_PRODUCT_NAME="Jupiter" \
+  scripts/pocketforge-daemon --json | jq -e '.detection.current_device.id == "steam-deck-lcd"' >/dev/null
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+POCKETFORGE_DMI_SYS_VENDOR="Valve" \
+POCKETFORGE_DMI_PRODUCT_NAME="Galileo" \
+  scripts/pocketforge-daemon --json | jq -e '.detection.current_device.id == "steam-deck-oled"' >/dev/null
+POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+POCKETFORGE_DMI_SYS_VENDOR="Unknown Vendor" \
+POCKETFORGE_DMI_PRODUCT_NAME="Unknown Product" \
+  scripts/pocketforge-daemon --json | jq -e '.detection.current_device.matched == false' >/dev/null
+
 echo "==> Validating PocketForge daemon contract"
 ruby scripts/validate-daemon-contract.rb
 ruby -rjson -I scripts/lib -rpocketforge/schema_validator -e 'schema = JSON.parse(File.read("shared/api/daemon-inventory.schema.json")); data = JSON.parse(File.read("apps/pocketforge-control-center/sample-inventory.json")); errors = PocketForge::SchemaValidator.validate(data, schema); abort(errors.join("\n")) unless errors.empty?; puts "OK: Control Center sample inventory matches daemon contract"'

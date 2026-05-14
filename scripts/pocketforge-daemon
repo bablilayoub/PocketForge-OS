@@ -5,8 +5,12 @@ DEVICE_PROFILE_DIR="${POCKETFORGE_DEVICE_PROFILE_DIR:-/usr/share/pocketforge/dev
 PERFORMANCE_PROFILE_DIR="${POCKETFORGE_PERFORMANCE_PROFILE_DIR:-/usr/share/pocketforge/performance-profiles}"
 REFRESH_INTERVAL="${POCKETFORGE_DAEMON_REFRESH_INTERVAL:-3600}"
 DAEMON_NAME="pocketforge-daemon"
-DAEMON_CONTRACT_VERSION="0.1"
+DAEMON_CONTRACT_VERSION="0.2"
 DAEMON_MODE="read-only"
+DMI_SYS_VENDOR=""
+DMI_PRODUCT_NAME=""
+DMI_PRODUCT_VERSION=""
+DMI_BOARD_NAME=""
 
 log() {
   printf 'pocketforge-daemon: %s\n' "$*"
@@ -66,6 +70,149 @@ collect_profiles() {
   done
 }
 
+detection_dmi_values() {
+  local file="$1"
+  local field="$2"
+
+  awk -v field="$field" '
+    $0 ~ "^    " field ":[[:space:]]*$" {
+      in_field = 1
+      next
+    }
+    in_field && $0 ~ /^      - / {
+      value = $0
+      sub(/^      -[[:space:]]*/, "", value)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", value)
+      gsub(/^"|"$/, "", value)
+      print value
+      next
+    }
+    in_field && $0 !~ /^      / {
+      exit
+    }
+  ' "$file"
+}
+
+read_dmi_value() {
+  local field="$1"
+  local override=""
+  local path=""
+
+  case "$field" in
+    sys_vendor)
+      override="${POCKETFORGE_DMI_SYS_VENDOR:-}"
+      path="/sys/class/dmi/id/sys_vendor"
+      ;;
+    product_name)
+      override="${POCKETFORGE_DMI_PRODUCT_NAME:-}"
+      path="/sys/class/dmi/id/product_name"
+      ;;
+    product_version)
+      override="${POCKETFORGE_DMI_PRODUCT_VERSION:-}"
+      path="/sys/class/dmi/id/product_version"
+      ;;
+    board_name)
+      override="${POCKETFORGE_DMI_BOARD_NAME:-}"
+      path="/sys/class/dmi/id/board_name"
+      ;;
+  esac
+
+  if [[ -n "$override" ]]; then
+    printf '%s' "$override"
+    return
+  fi
+
+  if [[ -r "$path" ]]; then
+    tr -d '\000' < "$path"
+  fi
+}
+
+matches_any() {
+  local value
+  value="$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')"
+  shift
+
+  local pattern
+  for pattern in "$@"; do
+    pattern="$(printf '%s' "$pattern" | tr '[:upper:]' '[:lower:]')"
+    if [[ -n "$pattern" && "$value" == *"$pattern"* ]]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+profile_matches_current_dmi() {
+  local file="$1"
+  local vendor_patterns=()
+  local patterns=()
+
+  while IFS= read -r value; do
+    vendor_patterns+=("$value")
+  done < <(detection_dmi_values "$file" "sys_vendor")
+
+  if [[ "${#vendor_patterns[@]}" -gt 0 ]] && ! matches_any "$DMI_SYS_VENDOR" "${vendor_patterns[@]}"; then
+    return 1
+  fi
+
+  while IFS= read -r value; do
+    patterns+=("$value")
+  done < <(detection_dmi_values "$file" "product_name")
+  if [[ "${#patterns[@]}" -gt 0 ]] && matches_any "$DMI_PRODUCT_NAME" "${patterns[@]}"; then
+    printf '%s' "sys_vendor+product_name"
+    return 0
+  fi
+
+  patterns=()
+  while IFS= read -r value; do
+    patterns+=("$value")
+  done < <(detection_dmi_values "$file" "product_version")
+  if [[ "${#patterns[@]}" -gt 0 ]] && matches_any "$DMI_PRODUCT_VERSION" "${patterns[@]}"; then
+    printf '%s' "sys_vendor+product_version"
+    return 0
+  fi
+
+  patterns=()
+  while IFS= read -r value; do
+    patterns+=("$value")
+  done < <(detection_dmi_values "$file" "board_name")
+  if [[ "${#patterns[@]}" -gt 0 ]] && matches_any "$DMI_BOARD_NAME" "${patterns[@]}"; then
+    printf '%s' "sys_vendor+board_name"
+    return 0
+  fi
+
+  return 1
+}
+
+load_current_dmi() {
+  DMI_SYS_VENDOR="$(read_dmi_value "sys_vendor")"
+  DMI_PRODUCT_NAME="$(read_dmi_value "product_name")"
+  DMI_PRODUCT_VERSION="$(read_dmi_value "product_version")"
+  DMI_BOARD_NAME="$(read_dmi_value "board_name")"
+}
+
+detect_current_device() {
+  if [[ ! -d "$DEVICE_PROFILE_DIR" ]]; then
+    return
+  fi
+
+  local files=()
+  while IFS= read -r -d '' file; do
+    files+=("$file")
+  done < <(find "$DEVICE_PROFILE_DIR" -maxdepth 1 -type f -name '*.yml' -print0 | sort -z)
+
+  local file id name matched_on
+  for file in "${files[@]}"; do
+    if matched_on="$(profile_matches_current_dmi "$file")"; then
+      id="$(profile_field "$file" id)"
+      name="$(profile_field "$file" name)"
+      printf '%s\t%s\t%s\n' "$id" "$name" "$matched_on"
+      return
+    fi
+  done
+}
+
 list_profiles() {
   local kind="$1"
   local directory="$2"
@@ -111,9 +258,37 @@ print_daemon_json() {
     "$(json_escape "$DAEMON_MODE")"
 }
 
+print_detection_json() {
+  local detected id name matched_on
+
+  load_current_dmi
+  detected="$(detect_current_device || true)"
+
+  printf '"detection": {'
+  printf '"system": {"sys_vendor": "%s", "product_name": "%s", "product_version": "%s", "board_name": "%s"}, ' \
+    "$(json_escape "$DMI_SYS_VENDOR")" \
+    "$(json_escape "$DMI_PRODUCT_NAME")" \
+    "$(json_escape "$DMI_PRODUCT_VERSION")" \
+    "$(json_escape "$DMI_BOARD_NAME")"
+
+  if [[ -n "$detected" ]]; then
+    IFS=$'\t' read -r id name matched_on <<< "$detected"
+    printf '"current_device": {"matched": true, "id": "%s", "name": "%s", "matched_on": "%s"}' \
+      "$(json_escape "$id")" \
+      "$(json_escape "$name")" \
+      "$(json_escape "$matched_on")"
+  else
+    printf '"current_device": {"matched": false, "id": "unknown", "name": "Unknown device", "matched_on": "none"}'
+  fi
+
+  printf '}'
+}
+
 print_state_json() {
   printf '{'
   print_daemon_json
+  printf ', '
+  print_detection_json
   printf ', '
   print_profile_array_json "device" "$DEVICE_PROFILE_DIR"
   printf ', '
@@ -122,7 +297,17 @@ print_state_json() {
 }
 
 refresh_state() {
+  local detected id name matched_on
+
   log "starting metadata refresh"
+  load_current_dmi
+  detected="$(detect_current_device || true)"
+  if [[ -n "$detected" ]]; then
+    IFS=$'\t' read -r id name matched_on <<< "$detected"
+    log "current device matched: id=${id} name=${name} matched_on=${matched_on}"
+  else
+    log "current device not matched from DMI metadata"
+  fi
   list_profiles "device" "$DEVICE_PROFILE_DIR"
   list_profiles "performance" "$PERFORMANCE_PROFILE_DIR"
   log "metadata refresh complete"

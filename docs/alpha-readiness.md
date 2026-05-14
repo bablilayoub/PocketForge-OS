@@ -12,6 +12,7 @@ the custom handheld stack is finished.
 - PocketForge firstboot service is installed and enabled.
 - PocketForge Daemon is installed, enabled, and read-only.
 - Daemon JSON inventory contract is validated.
+- Daemon reports read-only DMI device detection when a profile matches.
 - Control Center prototype is installed in the image and can display daemon
   inventory metadata.
 - Device profiles exist for the first target handheld families.
@@ -24,7 +25,7 @@ the custom handheld stack is finished.
 - TDP control
 - Fan control
 - Firmware or embedded-controller writes
-- Automatic device-specific tuning
+- Automatic device-specific tuning beyond read-only detection
 - Installer polish
 - Production recovery UX
 - Stable gaming-session switching

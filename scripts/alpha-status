@@ -65,6 +65,16 @@ else
   fail "Daemon inventory contract validates"
 fi
 
+if POCKETFORGE_DEVICE_PROFILE_DIR="$PWD/shared/device-profiles" \
+  POCKETFORGE_PERFORMANCE_PROFILE_DIR="$PWD/shared/performance-profiles" \
+  POCKETFORGE_DMI_SYS_VENDOR="ASUSTeK COMPUTER INC." \
+  POCKETFORGE_DMI_PRODUCT_NAME="RC72LA" \
+  scripts/pocketforge-daemon --json | jq -e '.detection.current_device.id == "rog-ally-x"' >/dev/null; then
+  pass "Read-only device detection matches a known profile"
+else
+  fail "Read-only device detection matches a known profile"
+fi
+
 echo
 if [[ "$FAILED" -eq 0 ]]; then
   echo "Alpha foundation is locally ready for a manual image build."

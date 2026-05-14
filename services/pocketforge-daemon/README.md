@@ -3,13 +3,14 @@
 Background system service for PocketForge OS.
 
 The current daemon is a safe early skeleton. It starts as a systemd service,
-loads PocketForge device and performance profile metadata, and logs the profiles
-available on the image.
+loads PocketForge device and performance profile metadata, reads DMI metadata
+for device detection, and logs the profiles available on the image.
 
 Current behavior:
 
 - Read `/usr/share/pocketforge/device-profiles`
 - Read `/usr/share/pocketforge/performance-profiles`
+- Match the current device from read-only `/sys/class/dmi/id` metadata
 - Log detected profile IDs and names
 - Print profile inventory with `pocketforge-daemon --json`
 - Refresh metadata periodically
@@ -20,8 +21,22 @@ Current JSON contract:
 {
   "daemon": {
     "name": "pocketforge-daemon",
-    "contract_version": "0.1",
+    "contract_version": "0.2",
     "mode": "read-only"
+  },
+  "detection": {
+    "system": {
+      "sys_vendor": "ASUSTeK COMPUTER INC.",
+      "product_name": "RC72LA",
+      "product_version": "",
+      "board_name": ""
+    },
+    "current_device": {
+      "matched": true,
+      "id": "rog-ally-x",
+      "name": "ASUS ROG Ally X",
+      "matched_on": "sys_vendor+product_name"
+    }
   },
   "device_profiles": [
     {
@@ -40,7 +55,6 @@ Current JSON contract:
 
 Future responsibilities:
 
-- Device detection
 - Performance profile application
 - Battery modes
 - Display settings

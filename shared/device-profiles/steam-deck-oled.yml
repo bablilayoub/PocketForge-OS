@@ -1,6 +1,15 @@
 id: steam-deck-oled
 name: Steam Deck OLED
 
+detection:
+  dmi:
+    sys_vendor:
+      - Valve
+    product_name:
+      - Galileo
+    product_version:
+      - Steam Deck OLED
+
 display:
   resolution: "1280x800"
   refresh_rates:

@@ -1,6 +1,15 @@
 id: legion-go
 name: Lenovo Legion Go
 
+detection:
+  dmi:
+    sys_vendor:
+      - LENOVO
+    product_name:
+      - 83E1
+    product_version:
+      - Legion Go 8APU1
+
 display:
   resolution: "2560x1600"
   refresh_rates:

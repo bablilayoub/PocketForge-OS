@@ -1,8 +1,22 @@
 {
   "daemon": {
     "name": "pocketforge-daemon",
-    "contract_version": "0.1",
+    "contract_version": "0.2",
     "mode": "read-only"
+  },
+  "detection": {
+    "system": {
+      "sys_vendor": "",
+      "product_name": "",
+      "product_version": "",
+      "board_name": ""
+    },
+    "current_device": {
+      "matched": false,
+      "id": "unknown",
+      "name": "Unknown device",
+      "matched_on": "none"
+    }
   },
   "device_profiles": [
     {

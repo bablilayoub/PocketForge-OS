@@ -134,7 +134,7 @@ Draft alpha release notes live in `docs/alpha-release-notes.md`.
 - [ ] Build PocketForge Overlay
 - [x] Add metadata-only device profiles
 - [x] Add metadata-only performance profiles
-- [ ] Add device detection
+- [x] Add read-only device detection
 - [ ] Add Steam gaming session
 - [ ] Add better Gamescope configuration
 - [ ] Add Flatpak app setup

@@ -1,6 +1,14 @@
 id: rog-ally
 name: ASUS ROG Ally
 
+detection:
+  dmi:
+    sys_vendor:
+      - ASUSTeK COMPUTER INC.
+      - ASUSTeK COMPUTER INC
+    product_name:
+      - RC71L
+
 display:
   resolution: "1920x1080"
   refresh_rates:
