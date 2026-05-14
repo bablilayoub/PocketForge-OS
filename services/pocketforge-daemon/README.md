@@ -18,6 +18,11 @@ Current JSON contract:
 
 ```json
 {
+  "daemon": {
+    "name": "pocketforge-daemon",
+    "contract_version": "0.1",
+    "mode": "read-only"
+  },
   "device_profiles": [
     {
       "id": "rog-ally-x",

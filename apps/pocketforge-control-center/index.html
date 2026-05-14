@@ -38,7 +38,11 @@
           </article>
           <article>
             <span class="metric-label">Mode</span>
-            <strong>Read Only</strong>
+            <strong id="daemon-mode">read-only</strong>
+          </article>
+          <article>
+            <span class="metric-label">Contract</span>
+            <strong id="contract-version">0.1</strong>
           </article>
         </section>
 
@@ -63,8 +67,9 @@
         <section class="panel contract-panel" id="system">
           <div class="panel-heading">
             <h2>Daemon Contract</h2>
-            <span>shared/api/daemon-inventory.schema.json</span>
+            <span id="daemon-name">pocketforge-daemon</span>
           </div>
+          <p class="contract-path">shared/api/daemon-inventory.schema.json</p>
           <pre id="inventory-json" aria-label="Daemon inventory JSON"></pre>
         </section>
       </section>

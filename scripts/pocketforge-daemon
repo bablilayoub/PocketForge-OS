@@ -4,6 +4,9 @@ set -euo pipefail
 DEVICE_PROFILE_DIR="${POCKETFORGE_DEVICE_PROFILE_DIR:-/usr/share/pocketforge/device-profiles}"
 PERFORMANCE_PROFILE_DIR="${POCKETFORGE_PERFORMANCE_PROFILE_DIR:-/usr/share/pocketforge/performance-profiles}"
 REFRESH_INTERVAL="${POCKETFORGE_DAEMON_REFRESH_INTERVAL:-3600}"
+DAEMON_NAME="pocketforge-daemon"
+DAEMON_CONTRACT_VERSION="0.1"
+DAEMON_MODE="read-only"
 
 log() {
   printf 'pocketforge-daemon: %s\n' "$*"
@@ -101,8 +104,17 @@ print_profile_array_json() {
   printf ']'
 }
 
+print_daemon_json() {
+  printf '"daemon": {"name": "%s", "contract_version": "%s", "mode": "%s"}' \
+    "$(json_escape "$DAEMON_NAME")" \
+    "$(json_escape "$DAEMON_CONTRACT_VERSION")" \
+    "$(json_escape "$DAEMON_MODE")"
+}
+
 print_state_json() {
   printf '{'
+  print_daemon_json
+  printf ', '
   print_profile_array_json "device" "$DEVICE_PROFILE_DIR"
   printf ', '
   print_profile_array_json "performance" "$PERFORMANCE_PROFILE_DIR"

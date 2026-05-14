@@ -1,4 +1,9 @@
 const fallbackInventory = {
+  daemon: {
+    name: "pocketforge-daemon",
+    contract_version: "0.1",
+    mode: "read-only",
+  },
   device_profiles: [
     {
       id: "rog-ally-x",
@@ -49,6 +54,9 @@ function renderProfiles(id, profiles) {
 function renderInventory(inventory) {
   document.getElementById("device-count").textContent = inventory.device_profiles.length;
   document.getElementById("performance-count").textContent = inventory.performance_profiles.length;
+  document.getElementById("daemon-mode").textContent = inventory.daemon.mode;
+  document.getElementById("contract-version").textContent = inventory.daemon.contract_version;
+  document.getElementById("daemon-name").textContent = inventory.daemon.name;
   document.getElementById("inventory-json").textContent = JSON.stringify(inventory, null, 2);
 
   renderProfiles("device-profiles", inventory.device_profiles);

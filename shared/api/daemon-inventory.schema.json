@@ -4,8 +4,27 @@
   "title": "PocketForge Daemon Inventory",
   "type": "object",
   "additionalProperties": false,
-  "required": ["device_profiles", "performance_profiles"],
+  "required": ["daemon", "device_profiles", "performance_profiles"],
   "properties": {
+    "daemon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "contract_version", "mode"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^pocketforge-daemon$"
+        },
+        "contract_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["read-only"]
+        }
+      }
+    },
     "device_profiles": {
       "type": "array",
       "items": {
