@@ -30,6 +30,7 @@ the custom handheld stack is finished.
 
 ## Alpha Exit Checklist
 
+- [ ] `scripts/alpha-status` reports local alpha foundation readiness.
 - [ ] `scripts/check-local` passes.
 - [ ] Manual `Validate project files` workflow passes.
 - [ ] Manual `Build container image` workflow passes.

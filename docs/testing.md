@@ -14,6 +14,12 @@ scripts/check-local
 This validates metadata, schemas, shell scripts, daemon JSON, and the current
 read-only Control Center sample.
 
+For a quick alpha milestone summary:
+
+```bash
+scripts/alpha-status
+```
+
 ## Daemon Testing
 
 Run the daemon once against the repository metadata:

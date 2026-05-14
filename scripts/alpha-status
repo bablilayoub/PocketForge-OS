@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+pass() {
+  printf 'PASS  %s\n' "$1"
+}
+
+fail() {
+  printf 'FAIL  %s\n' "$1"
+  FAILED=1
+}
+
+check_file() {
+  local path="$1"
+  local label="$2"
+
+  if [[ -f "$path" ]]; then
+    pass "$label"
+  else
+    fail "$label"
+  fi
+}
+
+FAILED=0
+
+echo "PocketForge OS alpha status"
+echo
+
+check_file Containerfile "Containerfile exists"
+check_file build_files/build.sh "Image build script exists"
+check_file files/etc/systemd/system/pocketforge-daemon.service "Daemon systemd unit exists"
+check_file files/etc/systemd/system/pocketforge-firstboot.service "Firstboot systemd unit exists"
+check_file scripts/pocketforge-daemon "Daemon executable exists"
+check_file apps/pocketforge-control-center/index.html "Control Center prototype exists"
+check_file shared/api/daemon-inventory.schema.json "Daemon inventory schema exists"
+
+device_count="$(find shared/device-profiles -maxdepth 1 -type f -name '*.yml' | wc -l | tr -d ' ')"
+performance_count="$(find shared/performance-profiles -maxdepth 1 -type f -name '*.yml' | wc -l | tr -d ' ')"
+
+if [[ "$device_count" -ge 4 ]]; then
+  pass "Device profiles available: $device_count"
+else
+  fail "Device profiles available: $device_count"
+fi
+
+if [[ "$performance_count" -ge 2 ]]; then
+  pass "Performance profiles available: $performance_count"
+else
+  fail "Performance profiles available: $performance_count"
+fi
+
+if scripts/sync-control-center-sample --check >/dev/null; then
+  pass "Control Center sample is synced"
+else
+  fail "Control Center sample is synced"
+fi
+
+if ruby scripts/validate-daemon-contract.rb >/dev/null; then
+  pass "Daemon inventory contract validates"
+else
+  fail "Daemon inventory contract validates"
+fi
+
+echo
+if [[ "$FAILED" -eq 0 ]]; then
+  echo "Alpha foundation is locally ready for a manual image build."
+else
+  echo "Alpha foundation has local blockers."
+  exit 1
+fi

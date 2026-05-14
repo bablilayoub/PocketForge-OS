@@ -22,3 +22,9 @@ current daemon smoke test.
 
 During heavy development, batch related changes locally, run `scripts/check-local`,
 then manually run the full image build when the runtime or image layout changes.
+
+For alpha milestone checks, run:
+
+```bash
+scripts/alpha-status
+```
