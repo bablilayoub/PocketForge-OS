@@ -22,8 +22,19 @@ concurrency:
 
 jobs:
   build_push:
-    name: Build and push image
-    runs-on: ubuntu-24.04
+    name: Build and push image (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
 
     permissions:
       contents: read
@@ -93,11 +104,10 @@ jobs:
         with:
           containerfiles: |
             ./Containerfile
-          # Postfix image name with -custom to make it a little more descriptive
-          # Syntax: https://docs.github.com/en/actions/learn-github-actions/expressions#format
           image: ${{ env.IMAGE_NAME }}
-          tags: ${{ steps.metadata.outputs.tags }}
+          tags: ${{ steps.metadata.outputs.tags }} ${{ env.DEFAULT_TAG }}-${{ matrix.arch }}
           labels: ${{ steps.metadata.outputs.labels }}
+          platforms: ${{ matrix.platform }}
           oci: false
 
       # Rechunk is a script used by Universal Blue images to avoid publishing one huge layer.
@@ -148,7 +158,7 @@ jobs:
         with:
           registry: ${{ env.IMAGE_REGISTRY }}
           image: ${{ env.IMAGE_NAME }}
-          tags: ${{ steps.metadata.outputs.tags }}
+          tags: ${{ env.DEFAULT_TAG }}-${{ matrix.arch }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
 
@@ -173,3 +183,42 @@ jobs:
       #     TAGS: ${{ steps.push.outputs.digest }}
       #     COSIGN_EXPERIMENTAL: false
       #     COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+
+  manifest:
+    name: Create and push multi-arch manifest
+    runs-on: ubuntu-24.04
+    needs: build_push
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Prepare environment
+        run: |
+          echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date -u +%Y%m%d)" >> $GITHUB_OUTPUT
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create and push manifest
+        run: |
+          FULL="${IMAGE_REGISTRY}/${IMAGE_NAME}"
+          DATE=${{ steps.date.outputs.date }}
+
+          for tag in latest "latest.${DATE}" "${DATE}"; do
+            buildah manifest create "${FULL}:${tag}" \
+              "${FULL}:latest-amd64" \
+              "${FULL}:latest-arm64"
+            buildah manifest push --all "${FULL}:${tag}" "docker://${FULL}:${tag}"
+          done
