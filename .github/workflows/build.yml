@@ -1,6 +1,9 @@
 ---
 name: Build container image
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '05 10 * * 0'  # Weekly safety build, Sunday 10:05 UTC.
   workflow_dispatch:
