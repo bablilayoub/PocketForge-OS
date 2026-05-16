@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/kinoite-main:latest
+FROM ghcr.io/ublue-os/kinoite-main:latest AS pocketforge-os
 
 # Copy OS files before build.sh so systemd services and firstboot scripts exist
 # before systemctl enable runs.
@@ -22,4 +22,5 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/build.sh
 
 ### LINTING
+FROM pocketforge-os AS pocketforge-os-linted
 RUN bootc container lint

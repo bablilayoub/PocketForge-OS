@@ -100,6 +100,22 @@ build $target_image=image_name $tag=default_tag:
         --tag "${target_image}:${tag}" \
         .
 
+# Build the image using Docker — use this on macOS instead of `just build`
+[group('Build')]
+docker-build $target_image=image_name $tag=default_tag:
+    #!/usr/bin/env bash
+    BUILD_ARGS=()
+    if [[ -z "$(git status -s)" ]]; then
+        BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
+    fi
+    docker build \
+        "${BUILD_ARGS[@]}" \
+        --platform linux/amd64 \
+        --file Containerfile \
+        --target pocketforge-os \
+        --tag "${target_image}:${tag}" \
+        .
+
 # Smoke test a locally built container image
 [group('Test')]
 smoke-image $image=("localhost/" + image_name + ":" + default_tag):
@@ -107,6 +123,14 @@ smoke-image $image=("localhost/" + image_name + ":" + default_tag):
     set -euo pipefail
 
     scripts/image-smoke "{{ image }}"
+
+# Run the validate CI workflow locally using act (requires Docker)
+[group('Test')]
+act-validate:
+    act push \
+        -W .github/workflows/validate.yml \
+        -P ubuntu-24.04=catthehacker/ubuntu:act-24.04 \
+        --container-architecture linux/amd64
 
 # Command: _rootful_load_image
 # Description: This script checks if the current user is root or running under sudo. If not, it attempts to resolve the image tag using podman inspect.
