@@ -4,8 +4,18 @@ set -euo pipefail
 IMAGE="${1:-pocketforge-os:alpha-test}"
 PLATFORM="${PLATFORM:-linux/amd64}"
 
+# Use podman if available, fall back to docker
+if command -v podman >/dev/null 2>&1; then
+  RUNTIME=podman
+elif command -v docker >/dev/null 2>&1; then
+  RUNTIME=docker
+else
+  echo "podman or docker is required for image smoke checks" >&2
+  exit 1
+fi
+
 run_in_image() {
-  podman run --rm --platform "$PLATFORM" "$IMAGE" "$@"
+  "$RUNTIME" run --rm --platform "$PLATFORM" "$IMAGE" "$@"
 }
 
 require_file() {
@@ -22,20 +32,19 @@ require_package() {
   echo "OK: package $package"
 }
 
-if ! command -v podman >/dev/null 2>&1; then
-  echo "podman is required for image smoke checks" >&2
-  exit 1
-fi
-
 if ! command -v jq >/dev/null 2>&1; then
   echo "jq is required for daemon JSON validation" >&2
   exit 1
 fi
 
-podman image exists "$IMAGE"
+if [[ "$RUNTIME" == "podman" ]]; then
+  podman image exists "$IMAGE"
+else
+  docker image inspect "$IMAGE" >/dev/null 2>&1 || { echo "Image not found: $IMAGE" >&2; exit 1; }
+fi
 
 echo "==> Inspecting image"
-podman image inspect "$IMAGE" --format '{{.Id}} {{.Architecture}} {{.Os}}'
+"$RUNTIME" image inspect "$IMAGE" --format '{{.Id}} {{.Architecture}} {{.Os}}'
 
 echo "==> Validating daemon inventory"
 run_in_image /usr/libexec/pocketforge-os/pocketforge-daemon --json | jq empty

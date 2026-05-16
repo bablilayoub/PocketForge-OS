@@ -116,9 +116,9 @@ docker-build $target_image=image_name $tag=default_tag:
         --tag "${target_image}:${tag}" \
         .
 
-# Smoke test a locally built container image
+# Smoke test a locally built container image (pass image name, or defaults to docker-build output)
 [group('Test')]
-smoke-image $image=("localhost/" + image_name + ":" + default_tag):
+smoke-image $image=(image_name + ":" + default_tag):
     #!/usr/bin/env bash
     set -euo pipefail
 
