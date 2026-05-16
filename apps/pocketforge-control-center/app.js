@@ -120,3 +120,25 @@ loadInventory()
     status.textContent = "Contract Error";
     document.getElementById("inventory-json").textContent = error.message;
   });
+
+// Nav: highlight the section closest to the top of the viewport on scroll.
+function updateActiveNav() {
+  const sections = ["overview", "profiles", "system"];
+  const links = document.querySelectorAll("nav a");
+
+  let activeId = sections[0];
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 80) {
+      activeId = id;
+    }
+  }
+
+  for (const link of links) {
+    const href = link.getAttribute("href");
+    link.classList.toggle("active", href === `#${activeId}`);
+  }
+}
+
+document.addEventListener("scroll", updateActiveNav, { passive: true });
+updateActiveNav();

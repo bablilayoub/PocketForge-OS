@@ -48,6 +48,10 @@
     {
       "id": "battery-saver",
       "name": "Battery Saver"
+    },
+    {
+      "id": "performance",
+      "name": "Performance"
     }
   ]
 }

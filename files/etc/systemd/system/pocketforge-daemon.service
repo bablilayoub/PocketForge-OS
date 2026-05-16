@@ -8,6 +8,8 @@ Type=simple
 ExecStart=/usr/libexec/pocketforge-os/pocketforge-daemon
 Restart=on-failure
 RestartSec=5s
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=multi-user.target

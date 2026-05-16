@@ -5,6 +5,7 @@ ConditionPathExists=!/var/lib/pocketforge-os/firstboot-complete
 
 [Service]
 Type=oneshot
+RemainAfterExit=yes
 ExecStart=/usr/libexec/pocketforge-os/firstboot.sh
 
 [Install]

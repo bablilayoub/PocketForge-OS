@@ -21,6 +21,7 @@ dnf5 install -y \
   fastfetch \
   btop \
   htop \
+  xdg-utils \
   mangohud \
   gamescope \
   gamemode \
@@ -35,6 +36,5 @@ dnf5 install -y \
 
 #### Example for enabling a System Unit File
 
-systemctl enable podman.socket
 systemctl enable pocketforge-daemon.service
 systemctl enable pocketforge-firstboot.service

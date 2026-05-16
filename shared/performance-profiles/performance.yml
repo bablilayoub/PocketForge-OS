@@ -1,0 +1,6 @@
+id: performance
+name: Performance
+description: High-performance handheld profile intended to favor responsiveness and frame rate.
+class: performance
+policy:
+  intent: prefer-performance
